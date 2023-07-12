@@ -1,18 +1,40 @@
 import React from "react";
 
+
+
+
 function FishForm() {
+    function handleSubmit(e){
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(FormData);
+
+        const formJson = Object.fromEntries(formData.entries());
+
+    }
+
     return (
-        <div>
-            <h1>This form is for something </h1>
-            <p>Display a line that tells them what the form is for </p>
-            <p>Fish Species-textfield</p>
-            <p>Description- text field</p>
-            <p>Rarity-select input </p>
-            <p>Location seen- text field</p>
-            <p>Salt water or freshwater??</p>
-            <p>Possible fish Image</p>
-            {/* Create a submit button that sends form data to backend and handle backend response */}
-        </div>
+        <form method="post" onSubmit={handleSubmit}>
+        <label>Fish Species</label>
+        <input type='text' name='species'></input>
+        <label>Description</label>
+        <input type='text' name='description'></input>
+        <label>Is this fish rare?
+        <select>
+            <option value="true" name='rarity'>Yes</option>
+            <option value="flase" name='rarity'>No</option>
+        </select>
+        </label>
+        <label>Location or Origins</label>
+        <input type='text' name='location'></input>
+        <p>Saltwater or Freshwater?</p>
+        <label><input type='radio' name='waterType' value='saltwater' /> Saltwater </label>
+        <label><input type='radio' name='waterType' value='freshwater' /> Freshwater </label>
+        <label><input type='radio' name='waterType' value='brackishwater' /> Brackish Water</label>
+        <button type='submit'>Submit</button>
+        </form>
+
+
 
     )
 

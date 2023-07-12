@@ -1,1 +1,1 @@
-Please see the instructions in your email! Thank you :)
+# Please see the instructions in your email! Thank you
