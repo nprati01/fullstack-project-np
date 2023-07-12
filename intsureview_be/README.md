@@ -10,7 +10,7 @@ The package manager used is `poetry = "^1.2.2"`. [Learn more here.](https://pyth
 
 ## Getting started
 
-_Ensure you have a valid version of poetry and python installed, see above for details_
+- Ensure you have a valid version of poetry and python installed, see above for details_
 
 1. Type `poetry install` to gather all requirements
 1. Run demo server with `poetry run python manage.py runserver`
