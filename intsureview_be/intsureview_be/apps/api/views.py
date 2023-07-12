@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, Group
+from .models import Fish
 from rest_framework import viewsets
 from rest_framework import permissions
 from intsureview_be.apps.api.serializers import UserSerializer, GroupSerializer, FishSerializer
@@ -30,4 +31,3 @@ class FishViewSet(viewsets.ModelViewSet):
 
     queryset = Fish.objects.all()
     serializer_class = FishSerializer
-    permission_classes = [permissions.IsAuthenticated]
