@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import axios from "axios";
+import Modal from "./Modal";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFishFins } from "@fortawesome/free-solid-svg-icons"
-import axios from "axios";
-// import SuccessModal from "./SuccessModal";
+
+
 
 const Form = () => {
-  const [formData, setFormData] = useState({
+    const[success, setSuccess] = useState(false)
+    const[error, setError] = useState(false)
+    const [validationError, setValidationError] = useState("");
+    const [formData, setFormData] = useState({
     species: "",
     description: "",
     rarity: "",
@@ -13,7 +19,7 @@ const Form = () => {
     fun_fact: "",
   });
 
-  const [validationError, setValidationError] = useState("");
+
 //   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
@@ -26,12 +32,14 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.species.trim() === "") {
-      setValidationError("Please enter a real value");
-      return;
-    }
-    if (formData.fun_fact.length > 200) {
-      setValidationError("Please make your fact smaller");
+    if (
+      formData.description.length > 200 ||
+      formData.location.length > 200 ||
+      formData.fun_fact.length > 200
+    ) {
+      setValidationError(
+        "You exceeded character limit, please shorten submission"
+      );
       return;
     }
 
@@ -40,9 +48,14 @@ const Form = () => {
       .post("http://127.0.0.1:8000/fish/", formData)
       .then((response) => {
         // Handle successful response
-        console.log("Form submitted successfully:", response.data);
-        alert('Success your fish was added')
-        // setSuccess(true);
+        console.log(
+          response.status,
+          "Form submitted successfully:",
+          response.data
+        );
+        //reset state
+        setSuccess(true)
+        setError(false)
         setFormData({
           species: "",
           description: "",
@@ -52,23 +65,32 @@ const Form = () => {
         });
       })
       .catch((error) => {
-        console.error("Error submitting form:", error);
-        alert("your fish was not processed try again");
+        if (error.response) {
+          setError(true)
+          setSuccess(false)
+          console.log(error.response)
+          console.log("server responded")
+        } else if (error.request) {
+          console.log("network error")
+        } else {
+          console.log(error);
+        }
       });
   };
 
-//   const closeModal = () => {
-//     setSuccess(false);
-//   };
+  const closeModal = () => {
+    setSuccess(false)
+    setError(false)
+  };
 
   return (
-    <section className="bg-white shadow-lg rounded-lg lg:max-w-2xl lg:p-8 pb-12 mb-8 mx-auto">
-        <h2 className="mt-4 uppercase text-center font-bold text-2xl text-teal-700"> Add a Fish. . . . <FontAwesomeIcon icon={faFishFins} size="xl" style={{color: "#008b8b",}} /></h2>
+    <section className="bg-white shadow-lg rounded-lg lg:max-w-xl lg:p-8 pb-12 mb-8 mx-6">
+        <h2 className="mt-12 pt-12 uppercase text-center font-bold text-2xl text-teal-700"> Add a Fish. . . . <FontAwesomeIcon icon={faFishFins} size="xl" style={{color: "#008b8b",}} /></h2>
 
         <form className="grid grid-cols-1 md:max-w-75% xl:max-w-xl gap-4 my-12 mx-auto pt-4" onSubmit={handleSubmit}>
-        <label className="mt-2 uppercase font-bold text-lg text-grey-darkest">Fish Species</label>
+        <label className="m-2 uppercase font-bold text-lg text-grey-darkest">Fish Species</label>
         <input
-        className="outline-none w-full rounded-sm focus:ring-2 focus:ring-gray-200 bg-gray-100 text-gray-700"
+        className="outline-none w-full rounded-sm focus:ring-2 focus:ring-cyan-600 bg-gray-100 text-gray-700"
         onChange={handleChange}
         value={formData.species}
         type="text"
@@ -76,8 +98,8 @@ const Form = () => {
         placeholder=" Fish Species"
         required
         />
-        <label className="mt-2 uppercase font-bold text-lg text-grey-darkest"> Is this a rare fish? </label>
-        <select className=""
+        <label className="m-2 uppercase font-bold text-lg text-grey-darkest"> Is this a rare fish? </label>
+        <select className="p-1 outline-none rounded-md  focus:ring-2 focus:ring-cyan-600 bg-gray-100 text-gray-400"
         onChange={handleChange}
         value={formData.rarity}
         name="rarity"
@@ -87,9 +109,9 @@ const Form = () => {
         <option value="Yes"> Yes </option>
         <option value="No"> No </option>
         </select>
-        <label className="mt-2 uppercase font-bold text-lg text-grey-darkest"> Description </label>
+        <label className="m-2 uppercase font-bold text-lg text-grey-darkest"> Description </label>
         <textarea
-        className="p-4 outline-none w-full rounded-lg h-40 focus:ring-2 focus:ring-gray-200 bg-gray-100 text-gray-700"
+        className="p-4 outline-none w-full rounded-lg h-40 focus:ring-2 focus:ring-cyan-600 bg-gray-100 text-gray-700"
         onChange={handleChange}
         value={formData.description}
         type="text"
@@ -97,9 +119,9 @@ const Form = () => {
         placeholder="Describe the fish"
         required
         />
-        <label className="mt-2 uppercase font-bold text-lg text-grey-darkest"> Location </label>
+        <label className="m-2 uppercase font-bold text-lg text-grey-darkest"> Location </label>
         <textarea
-        className="p-4 outline-none w-full rounded-lg h-40 focus:ring-2 focus:ring-gray-200 bg-gray-100 text-gray-700"
+        className="p-4 outline-none w-full rounded-lg h-40 focus:ring-2 focus:ring-cyan-600 bg-gray-100 text-gray-700"
         onChange={handleChange}
         value={formData.location}
         type="text"
@@ -109,7 +131,7 @@ const Form = () => {
         />
         <label className="mt-2 uppercase font-bold text-lg text-grey-darkest"> Interesting Fact </label>
         <textarea
-        className="p-4 outline-none w-full rounded-lg h-40 focus:ring-2 focus:ring-gray-200 bg-gray-100 text-gray-700"
+        className="p-4 outline-none w-full rounded-lg h-40 focus:ring-2 focus:ring-cyan-600 bg-gray-100 text-gray-700"
         onChange={handleChange}
         value={formData.fun_fact}
         type="text"
@@ -117,12 +139,13 @@ const Form = () => {
         placeholder="Fun fact about this fish"
         />
         {validationError && <p className="error">{validationError}</p>}
-        {/* {success && <SuccessModal onClose={closeModal} />} */}
-
         <button type="submit" className="px-4 py-1 text-sm text-teal-700 font-semibold rounded-full border border-teal-600 hover:text-white hover:bg-teal-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2"> Submit </button>
-
-
         </form>
+
+        {success && (<Modal onClose={closeModal} content={<p>Your Fish was successfully added</p>} />
+        )}
+        {error && (<Modal onClose={closeModal} content={<p>There was an issue trying to submit your fish </p>} />
+        )}
 
 
     </section>
