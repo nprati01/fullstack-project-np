@@ -7,3 +7,9 @@ class Fish(models.Model):
     rarity = models.CharField(max_length=15)
     location = models.TextField(max_length=200)
     fun_fact = models.TextField(max_length=200)
+
+    class Meta:
+        verbose_name_plural = "fish"
+
+    def __str__(self):
+        return self.species
