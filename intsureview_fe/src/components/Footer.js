@@ -1,4 +1,5 @@
 import React from "react";
+// all links listed are filler
 
 function Footer() {
   return (
@@ -17,7 +18,7 @@ function Footer() {
         <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
           <li>
             <a
-              href="https://www.sureapp.com/"
+              href="https://www.wafishing.com.au/worlds-rarest-fish/"
               className="mr-4 hover:underline md:mr-6 "
             >
               About
@@ -25,22 +26,25 @@ function Footer() {
           </li>
           <li>
             <a
-              href="https://www.sureapp.com/"
+              href="https://www.wafishing.com.au/worlds-rarest-fish/"
               className="mr-4 hover:underline md:mr-6"
             >
-              Privacy Policy
+              Fish Policy
             </a>
           </li>
           <li>
             <a
-              href="https://www.sureapp.com/"
+              href="https://www.wafishing.com.au/worlds-rarest-fish/"
               className="mr-4 hover:underline md:mr-6"
             >
-              Licensing
+              fishEnthusiast
             </a>
           </li>
           <li>
-            <a href="https://www.sureapp.com/" className="hover:underline">
+            <a
+              href="https://www.wafishing.com.au/worlds-rarest-fish/"
+              className="hover:underline"
+            >
               Contact
             </a>
           </li>

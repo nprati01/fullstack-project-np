@@ -6,7 +6,7 @@
     ->rarity
     ->location
     ->saltwater/freshwater
-    ->image
+    -> next step image
 -> Update
 ->Delete
 **2. Users*
